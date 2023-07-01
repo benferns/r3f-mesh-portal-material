@@ -60,12 +60,12 @@ export const Experience = () => {
       }
       <XR
          referenceSpace="local"
-          sessionInit={{ requiredFeatures: ['local'], optionalFeatures: ['local', 'dom-overlay'] }}
+          sessionInit={{ requiredFeatures: ['local'], optionalFeatures: ['dom-overlay'] }}
           onSessionStarted={(session) => setXrActive(true)}
           onSessionEnded={() => setXrActive(false)}
 
       >
-        <group position={xrActive ? [0, 0, 0] : [0,0,1]} scale={[0.2,0.2,0.2]}>
+        <group position={xrActive ? [0, 0, 0] : [0,0,0]} scale={[0.2,0.2,0.2]}>
       <MonsterStage
         name="Fish King"
         color="#38adcf"
