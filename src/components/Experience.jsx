@@ -24,6 +24,13 @@ export const Experience = () => {
   
   const [xrActive, setXrActive] = useState(false)
 
+      function Render() {
+        // Takes over the render-loop, the user has the responsibility to render
+        useFrame(({ gl, scene, camera }) => {
+          gl.render(scene, camera)
+        }, 1)
+      }
+
 
   useEffect(() => {
     if (active) {
@@ -48,6 +55,15 @@ export const Experience = () => {
 
   return (
     <>
+      <XR
+         referenceSpace="local"
+          sessionInit={{ requiredFeatures: ['local'] }}
+          onSessionStarted={(session) => setXrActive(true)}
+          onSessionEnded={() => setXrActive(false)}
+
+      >
+        <Render />
+
       <ambientLight intensity={0.5} />
       <Environment preset="sunset" />
       { /* only if not xrActive */}
@@ -58,13 +74,7 @@ export const Experience = () => {
         minPolarAngle={Math.PI / 6}        
       />
       }
-      <XR
-         referenceSpace="local"
-          sessionInit={{ requiredFeatures: ['local'], optionalFeatures: ['dom-overlay'] }}
-          onSessionStarted={(session) => setXrActive(true)}
-          onSessionEnded={() => setXrActive(false)}
 
-      >
         <group position={xrActive ? [0, 0, 0] : [0,0,0]} scale={[0.2,0.2,0.2]}>
       <MonsterStage
         name="Fish King"
@@ -152,7 +162,7 @@ const MonsterStage = ({
         onPointerEnter={() => setHovered(name)}
         onPointerLeave={() => setHovered(null)}
       >
-        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide} worldUnits={true} renderPriority={0}>
+        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide} worldUnits={true} renderPriority={1}>
           <ambientLight intensity={1} />
           <Environment preset="sunset" />
           {children}
