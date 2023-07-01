@@ -7,7 +7,7 @@ import {
   useCursor,
   useTexture,
 } from "@react-three/drei";
-import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
+import { XR } from '@react-three/xr'
 import { useFrame, useThree } from "@react-three/fiber";
 import { easing } from "maath";
 import { useEffect, useRef, useState } from "react";
@@ -77,7 +77,7 @@ export const Experience = () => {
         hovered={hovered}
         setHovered={setHovered}
       >
-        <Fish scale={0.6} position-y={-1} hovered={hovered === "Fish King"} />
+        <Fish scale={0.6}  position={[0,-1,-1.5]} hovered={hovered === "Fish King"} />
       </MonsterStage>
       <MonsterStage
         texture={"textures/anime_art_style_lava_world.jpg"}
@@ -92,7 +92,7 @@ export const Experience = () => {
       >
         <DragonEvolved
           scale={0.5}
-          position-y={-1}
+          position={[-1,-1,-1.5]}
           hovered={hovered === "Dragon"}
         />
       </MonsterStage>
@@ -107,7 +107,7 @@ export const Experience = () => {
         hovered={hovered}
         setHovered={setHovered}
       >
-        <Cactoro scale={0.45} position-y={-1} hovered={hovered === "Cactoro"} />
+        <Cactoro scale={0.45} position={[1,-1,-1.5]} hovered={hovered === "Cactoro"} />
       </MonsterStage>
       </group>
       </XR>
