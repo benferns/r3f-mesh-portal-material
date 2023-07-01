@@ -65,7 +65,7 @@ export const Experience = () => {
           onSessionEnded={() => setXrActive(false)}
 
       >
-        <group position={xrActive ? [0, 0, 0] : [0,0,0]}>
+        <group position={xrActive ? [0, 0, 0] : [0,0,1]} scale={[0.2,0.2,0.2]}>
       <MonsterStage
         name="Fish King"
         color="#38adcf"
