@@ -63,7 +63,6 @@ export const Experience = () => {
 
       >
         <Render />
-
       <ambientLight intensity={0.5} />
       <Environment preset="sunset" />
       { /* only if not xrActive */}
@@ -74,8 +73,7 @@ export const Experience = () => {
         minPolarAngle={Math.PI / 6}        
       />
       }
-
-        <group position={xrActive ? [0, 0, 0] : [0,0,0]} scale={[0.2,0.2,0.2]}>
+        <group position={[0,0,-0.75]} scale={[0.25,0.25,0.25]}>
       <MonsterStage
         name="Fish King"
         color="#38adcf"
@@ -162,7 +160,7 @@ const MonsterStage = ({
         onPointerEnter={() => setHovered(name)}
         onPointerLeave={() => setHovered(null)}
       >
-        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide} worldUnits={true} renderPriority={1}>
+        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide} worldUnits={false} renderPriority={2} blend={0.5}>
           <ambientLight intensity={1} />
           <Environment preset="sunset" />
           {children}
