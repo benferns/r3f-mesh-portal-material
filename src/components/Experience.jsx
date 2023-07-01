@@ -7,6 +7,7 @@ import {
   useCursor,
   useTexture,
 } from "@react-three/drei";
+import { VRButton, ARButton, XR, Controllers, Hands } from '@react-three/xr'
 import { useFrame, useThree } from "@react-three/fiber";
 import { easing } from "maath";
 import { useEffect, useRef, useState } from "react";
@@ -20,11 +21,15 @@ export const Experience = () => {
   useCursor(hovered);
   const controlsRef = useRef();
   const scene = useThree((state) => state.scene);
+  
+  const [xrActive, setXrActive] = useState(false)
+
 
   useEffect(() => {
     if (active) {
       const targetPosition = new THREE.Vector3();
       scene.getObjectByName(active).getWorldPosition(targetPosition);
+      if(!xrActive){
       controlsRef.current.setLookAt(
         0,
         0,
@@ -34,20 +39,33 @@ export const Experience = () => {
         targetPosition.z,
         true
       );
+      }
+      
     } else {
-      controlsRef.current.setLookAt(0, 0, 10, 0, 0, 0, true);
+      if(!xrActive) controlsRef.current.setLookAt(0, 0, 10, 0, 0, 0, true);
     }
-  }, [active]);
+  }, [active, xrActive]);
 
   return (
     <>
       <ambientLight intensity={0.5} />
       <Environment preset="sunset" />
+      { /* only if not xrActive */}
+      {!xrActive &&
       <CameraControls
         ref={controlsRef}
         maxPolarAngle={Math.PI / 2}
-        minPolarAngle={Math.PI / 6}
+        minPolarAngle={Math.PI / 6}        
       />
+      }
+      <XR
+         referenceSpace="local"
+          sessionInit={{ requiredFeatures: ['local'], optionalFeatures: ['local', 'dom-overlay'] }}
+          onSessionStarted={(session) => setXrActive(true)}
+          onSessionEnded={() => setXrActive(false)}
+
+      >
+        <group position={xrActive ? [0, 0, 0] : [0,0,0]}>
       <MonsterStage
         name="Fish King"
         color="#38adcf"
@@ -91,6 +109,8 @@ export const Experience = () => {
       >
         <Cactoro scale={0.45} position-y={-1} hovered={hovered === "Cactoro"} />
       </MonsterStage>
+      </group>
+      </XR>
     </>
   );
 };
@@ -132,7 +152,7 @@ const MonsterStage = ({
         onPointerEnter={() => setHovered(name)}
         onPointerLeave={() => setHovered(null)}
       >
-        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide}>
+        <MeshPortalMaterial ref={portalMaterial} side={THREE.DoubleSide} worldUnits={true} renderPriority={0}>
           <ambientLight intensity={1} />
           <Environment preset="sunset" />
           {children}
